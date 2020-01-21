@@ -112,7 +112,7 @@ app.use(function(req, res, next) {
 app.get('/bookshelf', authenticate, (req, res) =>{
     /* We want to return an array of all the books in the database */
     Shelf.find({
-        _userId: req.user_id
+        // _userId: req.user_id
     }).then((bookshelves) => {
         res.send(bookshelves);
     }).catch((e) => {
@@ -176,7 +176,7 @@ app.delete('/bookshelf/:id', (req, res) =>{
 app.get('/bookshelf/:shelfId/books', (req, res) =>{
     // We want to return all books that belong to a specific book shelf (specified by id)
     Book.find({
-        _shelfId: req.params.shelfId
+        // _shelfId: req.params.shelfId
     }).then((books) => {
         res.send(books);
     })
@@ -234,6 +234,9 @@ app.delete('/bookshelf/:shelfId/books/:bookId', (req, res) => {
         _shelfId: req.params.shelfId
     }).then((removedBookDoc) => {
         res.send(removedBookDoc);
+
+        // delete all the tasks that are in the deleted list
+        deleteNotesFromBook(removedBookDoc._id);
     })
 });
 
@@ -352,6 +355,15 @@ app.get('/users/me/access-token', verifySession, (req, res) => {
     });
 })
 
+
+// Helper Methods 
+let deleteNotesFromBook = (_bookId) => {
+    Note.deleteMany({
+        _bookId
+    }).then(() => {
+        console.log("Notes from " + _bookId + " were deleted");
+    });
+}
 
 
 

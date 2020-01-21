@@ -7,7 +7,7 @@ import { LoginComponent } from './pages/login/login.component';
 
 const routes: Routes = [
   { path: '',
-  redirectTo: '/bookshelf',
+  redirectTo: '/books',
   pathMatch: 'full'
   },
   {
@@ -15,10 +15,10 @@ const routes: Routes = [
     component: NewBookComponent
   },
   { path: 'login', component: LoginComponent},
-  { path: 'bookshelf', component: ShelfComponent},
-  { path: 'bookshelf/:shelfId', component: ShelfComponent},
-  { path: 'bookshelf/:shelfId/books', component: BookComponent},
-  { path: 'bookshelf/:shelfId/books/:bookId', component: BookComponent},
+  // { path: 'bookshelf', component: ShelfComponent},
+  // { path: 'bookshelf/:shelfId', component: ShelfComponent},
+  { path: 'books', component: BookComponent},
+  { path: 'books/:bookId', component: BookComponent},
 
 
 ];
