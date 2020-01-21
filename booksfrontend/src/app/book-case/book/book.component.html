@@ -7,7 +7,7 @@
       </h1>
 
       <div class="list-menu">
-        <a class="list-menu-item" *ngFor="let book of allBooks" [routerLink]="['/bookshelf', book._shelfId, 'books', book._id]" routerLinkActive="is-active">
+        <a class="list-menu-item" *ngFor="let book of allBooks" [routerLink]="['/books', book._id]" routerLinkActive="is-active">
           <p>{{ book.title }} </p>
         </a>
 

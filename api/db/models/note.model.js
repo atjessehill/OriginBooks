@@ -12,7 +12,7 @@ const NoteSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
-    _shelfId: {
+    _userId: {
         type: mongoose.Types.ObjectId,
         require: true,
     },

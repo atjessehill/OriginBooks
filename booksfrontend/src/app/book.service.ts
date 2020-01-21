@@ -16,18 +16,17 @@ export class BookService {
     let title = bookJson.title;
     let author = bookJson.author;
     let genre = bookJson.genre;
-    let _shelfId = bookJson.shelfId;
+    let userId = localStorage.getItem('user-id');
 
-    return this.webReqService.post(`bookshelf/${_shelfId}/books`, { title, author, genre })
+    return this.webReqService.post(`books`, { title, author, genre, userId })
   }
 
   getBooks(){
-    let _shelfId = '5e24b0735e49f13e205e879a'
-    return this.webReqService.get(`bookshelf/${_shelfId}/books`);
+    return this.webReqService.get(`books`);
   }
 
   getNotes(shelfId: any, bookId: any){
 
-    return this.webReqService.get(`bookshelf/${shelfId}/books/${bookId}/notes`);
+    return this.webReqService.get(`books/${bookId}/notes`);
   }
 }

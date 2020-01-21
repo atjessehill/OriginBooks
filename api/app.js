@@ -173,8 +173,8 @@ app.delete('/bookshelf/:id', (req, res) =>{
  * GET /bookshelf/:shelfid/books
  * Purpose: Get all books in a specific shelf
  */
-app.get('/bookshelf/:shelfId/books', (req, res) =>{
-    // We want to return all books that belong to a specific book shelf (specified by id)
+app.get('/books', (req, res) =>{
+    // We want to return all books that belong to a specific user (specified by id)
     Book.find({
         // _shelfId: req.params.shelfId
     }).then((books) => {
@@ -182,7 +182,7 @@ app.get('/bookshelf/:shelfId/books', (req, res) =>{
     })
 });
 
-app.get('/bookshelf/:shelfId/books/:bookId', (req, res) => {
+app.get('/books/:bookId', (req, res) => {
     Book.findOne({
         _id: req.params.bookId,
         _shelfId: req.params.shelfId
@@ -197,14 +197,14 @@ app.get('/bookshelf/:shelfId/books/:bookId', (req, res) => {
  * Purpose: Create a new book in a specific bookshelf
  */
 
-app.post('/bookshelf/:shelfId/books', (req, res) => {
+app.post('/books', (req, res) => {
     //We want to create a new book specified by a shelfId
 
     let newBook = new Book({
         title: req.body.title,
         author: req.body.author,
         genre: req.body.genre,
-        _shelfId: req.params.shelfId
+        _userId: req.body.userId
     });
     newBook.save().then((newBookDoc) => {
         res.send(newBookDoc);
@@ -215,11 +215,10 @@ app.post('/bookshelf/:shelfId/books', (req, res) => {
  * PATCH /bookshelf/:shelfId/books/:bookId
  * Purpose: Update an existing book
  */
-app.patch('/bookshelf/:shelfId/books/:bookId', (req, res) => {
+app.patch('/books/:bookId', (req, res) => {
     // We want to pudate an existing book (specified by bookId)
     Book.findOneAndUpdate({
         _id: req.params.bookId,
-        _shelfId: req.params.shelfId
     }, {
         $set: req.body
         }
@@ -228,15 +227,14 @@ app.patch('/bookshelf/:shelfId/books/:bookId', (req, res) => {
     })
 });
 
-app.delete('/bookshelf/:shelfId/books/:bookId', (req, res) => {
+app.delete('/books/:bookId', (req, res) => {
     Book.findOneAndRemove({
         _id: req.params.bookId,
-        _shelfId: req.params.shelfId
     }).then((removedBookDoc) => {
         res.send(removedBookDoc);
 
         // delete all the tasks that are in the deleted list
-        deleteNotesFromBook(removedBookDoc._id);
+        deleteNotesFromBook(removedBookDoc._bookId);
     })
 });
 
@@ -247,10 +245,9 @@ app.delete('/bookshelf/:shelfId/books/:bookId', (req, res) => {
  * GET /Notes
  * Purpose: Get all Notes that correspond to a book and shelf
  */
-app.get('/bookshelf/:shelfId/books/:bookId/notes', (req, res) =>{
+app.get('/books/:bookId/notes', (req, res) =>{
     // We want to return all books that belong to a specific book shelf (specified by id)
     Note.find({
-        _shelfId: req.params.shelfId,
         _bookId: req.params.bookId
     }).then((notes) => {
         res.send(notes);
@@ -263,14 +260,13 @@ app.get('/bookshelf/:shelfId/books/:bookId/notes', (req, res) =>{
  * POST /Notes
  * Purpose: POST a note corresponding to a book on a shelf
  */
-app.post('/bookshelf/:shelfId/books/:bookId/notes', (req, res) => {
+app.post('/books/:bookId/notes', (req, res) => {
     //We want to create a new book specified by a shelfId
 
     let newNote = new Note({
         note: req.body.note,
         page: req.body.page,
         _bookId: req.params.bookId,
-        _shelfId: req.params.shelfId
     });
     newNote.save().then((newNoteDoc) => {
         res.send(newNoteDoc);

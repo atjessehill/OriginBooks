@@ -19,7 +19,7 @@ const BookSchema = new mongoose.Schema({
         minlength: 4,
         trim: true
     },
-    _shelfId: {
+    _userId: {
         type: mongoose.Types.ObjectId,
         require: true,
     }

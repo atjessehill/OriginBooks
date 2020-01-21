@@ -15,11 +15,8 @@ const routes: Routes = [
     component: NewBookComponent
   },
   { path: 'login', component: LoginComponent},
-  // { path: 'bookshelf', component: ShelfComponent},
-  // { path: 'bookshelf/:shelfId', component: ShelfComponent},
   { path: 'books', component: BookComponent},
   { path: 'books/:bookId', component: BookComponent},
-
 
 ];
 

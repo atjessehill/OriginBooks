@@ -21,7 +21,8 @@ export class BookComponent implements OnInit {
     this.route.params.subscribe(
       (params: Params) => {
         if (params.bookId) {
-          this.bookService.getNotes(params.shelfId, params.bookId).subscribe((notes: any[]) => {
+          let id = localStorage.getItem('user-id');
+          this.bookService.getNotes(id, params.bookId).subscribe((notes: any[]) => {
             this.allNotes = notes
             this.bookSelected = true;
           })

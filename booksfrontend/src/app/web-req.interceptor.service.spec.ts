@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { WebReqInterceptorService } from './web-req-interceptor.service';
+import { WebReqInterceptorService } from './web-req.interceptor.service';
 
 describe('WebReqInterceptorService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
