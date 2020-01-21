@@ -1,0 +1,21 @@
+<div class="centered-content">
+  <div class="shelf-container">
+
+    <button class="button" routerLink="/new-book"> </button>
+    <mat-grid-list cols="4" rowHeight = "100px">
+      <div *ngFor="let item of allbooks">
+        <mat-grid-tile [colspan] = "1" [rowspan] = "1">
+          <div>
+
+          </div>
+          <p> {{ item.title }}</p>
+          <br><br>
+          <p> {{item.author }} </p>
+
+        </mat-grid-tile>
+      </div>
+
+    </mat-grid-list>
+
+  </div>
+</div>

@@ -1,0 +1,57 @@
+<div class="centered-content">
+
+  <div class="book-view-container">
+    <div class="sidebar has-background-white">
+      <h1 class="title has-text-primary">
+        Books
+      </h1>
+
+      <div class="list-menu">
+        <a class="list-menu-item" *ngFor="let book of allBooks" [routerLink]="['/bookshelf', book._shelfId, 'books', book._id]" routerLinkActive="is-active">
+          <p>{{ book.title }} </p>
+        </a>
+
+      </div>
+      <button class="button is-primary has-text-white">+ New Book</button>
+
+    </div>
+    <div class="notes-list-container has-background-light">
+
+      <div *ngIf="bookSelected">
+        <h1 class="title has-text-primary">Notes</h1>
+        <div *ngIf="allNotes">
+
+          <div class="note" *ngFor="let note of allNotes">
+            <p>
+              {{ note.note }} | {{ note.page }}
+            </p>
+          </div>
+
+        </div>
+
+        <div *ngIf="allNotes.length === 0">
+
+          <h3 class="empty-state-text"> Add your first note</h3>
+
+        </div>
+
+      </div>
+
+
+
+      <div *ngIf="!bookSelected">
+
+        <h3 class="empty-state-text"> Please select a book from the sidebar</h3>
+
+      </div>
+
+      <!-- Note Elements go Here -->
+
+      <button class="circle-add-button button is-primary">
+        <img src="../../../assets/plus-icon.svg">
+      </button>
+
+    </div>
+  </div>
+
+</div>
