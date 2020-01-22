@@ -15,16 +15,19 @@ export class BookComponent implements OnInit {
   allBooks: any = []
   allNotes: any = []
   bookSelected: boolean;
+  selectedBook: any = [];
 
   ngOnInit() {
 
     this.route.params.subscribe(
       (params: Params) => {
         if (params.bookId) {
-          let id = localStorage.getItem('user-id');
-          this.bookService.getNotes(id, params.bookId).subscribe((notes: any[]) => {
+          this.bookService.getNotes(params.bookId).subscribe((notes: any[]) => {
             this.allNotes = notes
             this.bookSelected = true;
+          })
+          this.bookService.getOneBook(params.bookId).subscribe((book: any[]) => {
+            this.selectedBook = book;
           })
         } else{
           this.allNotes = undefined;

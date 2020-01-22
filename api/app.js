@@ -89,7 +89,7 @@ let verifySession = (req, res, next) => {
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
     res.header("Access-Control-Allow-Methods", "GET, POST, HEAD, OPTIONS, PUT, PATCH, DELETE");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, x-access-token, x-refresh-token, user-id");
 
     res.header(
         'ACCESS-Control-Expose-Headers',
@@ -173,19 +173,19 @@ app.delete('/bookshelf/:id', (req, res) =>{
  * GET /bookshelf/:shelfid/books
  * Purpose: Get all books in a specific shelf
  */
-app.get('/books', (req, res) =>{
+app.get('/books', authenticate, (req, res) =>{
     // We want to return all books that belong to a specific user (specified by id)
+    let id = req.header('user-id');
     Book.find({
-        // _shelfId: req.params.shelfId
+        _userId: id
     }).then((books) => {
         res.send(books);
     })
 });
 
-app.get('/books/:bookId', (req, res) => {
+app.get('/books/:bookId', authenticate, (req, res) => {
     Book.findOne({
         _id: req.params.bookId,
-        _shelfId: req.params.shelfId
     }).then((book) => {
         res.send(book);
     })
@@ -197,7 +197,7 @@ app.get('/books/:bookId', (req, res) => {
  * Purpose: Create a new book in a specific bookshelf
  */
 
-app.post('/books', (req, res) => {
+app.post('/books', authenticate, (req, res) => {
     //We want to create a new book specified by a shelfId
 
     let newBook = new Book({
@@ -247,11 +247,35 @@ app.delete('/books/:bookId', (req, res) => {
  */
 app.get('/books/:bookId/notes', (req, res) =>{
     // We want to return all books that belong to a specific book shelf (specified by id)
+    resDict = []
+    let bookId = req.params.bookId;
     Note.find({
-        _bookId: req.params.bookId
+        _bookId: bookId
     }).then((notes) => {
+
+        // let book = getOneBook(req.params.bookId);
+
+        // resDict.push({
+        //     key: "notes",
+        //     value: notes
+        // });
         res.send(notes);
+
     })
+
+    // Book.findOne({
+    //     _id: bookId,
+    // }).then((book) => {
+
+    //     // console.log(book);
+    //     resDict.push({
+    //         key: "book",
+    //         value: book
+    //     });
+    // })
+    // console.log(resDict);
+
+
 });
 
 
@@ -351,6 +375,15 @@ app.get('/users/me/access-token', verifySession, (req, res) => {
     });
 })
 
+app.get('/users', (req, res) => {
+    // we know that the user/caller is authenticated and we have the user_id and user object available to us
+    User.find({
+        // _userId: id
+    }).then((user) => {
+        res.send(user);
+    })
+})
+
 
 // Helper Methods 
 let deleteNotesFromBook = (_bookId) => {
@@ -360,8 +393,6 @@ let deleteNotesFromBook = (_bookId) => {
         console.log("Notes from " + _bookId + " were deleted");
     });
 }
-
-
 
 app.listen(3000, () =>{
 

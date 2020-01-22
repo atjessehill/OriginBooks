@@ -4,6 +4,7 @@ import { ShelfComponent } from './book-case/shelf/shelf.component';
 import { NewBookComponent } from './book-case/new-book/new-book.component';
 import { BookComponent } from './book-case/book/book.component';
 import { LoginComponent } from './pages/login/login.component';
+import { NewNoteComponent } from './book-case/new-note/new-note.component';
 
 const routes: Routes = [
   { path: '',
@@ -17,6 +18,8 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent},
   { path: 'books', component: BookComponent},
   { path: 'books/:bookId', component: BookComponent},
+  { path: 'books/:bookId/new-note', component: NewNoteComponent},
+
 
 ];
 

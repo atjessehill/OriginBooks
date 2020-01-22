@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,31 @@ export class WebRequestService {
   }
 
   get(uri: string){
+    let accessToken = localStorage.getItem('x-access-token');
+    let userId = localStorage.getItem('user-id');
+
+    // const httpOptions = {
+    //   headers: new HttpHeaders({
+    //     ''
+    //     'x-access-token': accessToken,
+    //     'user-id': userId
+    //   })
+    // };
+
     return this.http.get(`${this.ROOT_URL}/${uri}`);
+  }
+
+  getPayload(uri: string, payload: Object){
+
+    let accessToken = localStorage.getItem('x-access-token');
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        'Authorization': accessToken
+      })
+    };
+
+    return this.http.get(`${this.ROOT_URL}/${uri}`, payload);
   }
 
   post(uri: string, payload: Object){

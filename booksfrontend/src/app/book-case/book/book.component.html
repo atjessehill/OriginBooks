@@ -18,6 +18,21 @@
     <div class="notes-list-container has-background-light">
 
       <div *ngIf="bookSelected">
+
+        <div class="book-info">
+          <h1 class="title book-title info-item"> {{ selectedBook.title }} </h1>
+          <h2 class="title has-text-primary author-name info-item"> {{ selectedBook.author }} </h2>
+          <h3 class="title book-genre info-item"> {{ selectedBook.genre }} </h3>
+
+        </div>
+        <div class="border-container">
+
+      </div>
+
+
+
+
+
         <h1 class="title has-text-primary">Notes</h1>
         <div *ngIf="allNotes">
 
