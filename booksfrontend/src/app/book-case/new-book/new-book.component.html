@@ -1,5 +1,5 @@
 <div class="centered-content">
-  <div class="modal-box">
+  <div class="modal-box" *ngIf="!editMode">
     <h1 class="title"> Add New Book</h1>
 
 
@@ -16,6 +16,24 @@
       <button class="button is-primary is-medium has-text-white" (click)="createBook(titleInput.value, authorInput.value, genreInput.value)" routerLink="/">Create</button>
     </div>
 
+
+  </div>
+
+  <div class="modal-box" *ngIf="editMode">
+    <h1 class="title"> Update Your Book</h1>
+
+    <div #bookUpdateInput>
+      <input #titleInput class="input has-background-light is-medium" type="text" value="{{ selectedBook.title }}">
+      <br><br>
+      <input #authorInput class="input has-background-light is-medium" type="text"  value="{{ selectedBook.author }}">
+      <br><br>
+      <input #genreInput class="input has-background-light is-medium" type="text"  value="{{ selectedBook.genre }}">
+    </div>
+    <br><br>
+    <div class="buttons is-right">
+      <button routerLink="/books" class="button is-medium">Cancel</button>
+      <button class="button is-primary is-medium has-text-white" (click)="updateBook(titleInput.value, authorInput.value, genreInput.value)" routerLink="/">Update</button>
+    </div>
 
   </div>
 

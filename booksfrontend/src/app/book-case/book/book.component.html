@@ -12,7 +12,7 @@
         </a>
 
       </div>
-      <button class="button is-primary has-text-white">+ New Book</button>
+      <button class="button is-primary has-text-white" [routerLink]="['/new-book']">+ New Book</button>
 
     </div>
     <div class="notes-list-container has-background-light">
@@ -23,6 +23,7 @@
           <h1 class="title book-title info-item"> {{ selectedBook.title }} </h1>
           <h2 class="title has-text-primary author-name info-item"> {{ selectedBook.author }} </h2>
           <h3 class="title book-genre info-item"> {{ selectedBook.genre }} </h3>
+          <a class="delete is-large" (click)="deleteBook()"></a>
 
         </div>
         <div class="border-container">
@@ -37,9 +38,11 @@
         <div *ngIf="allNotes">
 
           <div class="note" *ngFor="let note of allNotes">
-            <p>
+            <p #noteItem id="{{ note._id }}">
               {{ note.note }} | {{ note.page }}
             </p>
+            <a class="delete is-small" (click)="deleteNote(noteItem.id)"></a>
+
           </div>
 
         </div>
@@ -62,7 +65,7 @@
 
       <!-- Note Elements go Here -->
 
-      <button class="circle-add-button button is-primary">
+      <button class="circle-add-button button is-primary" (click)="newNoteCall()">
         <img src="../../../assets/plus-icon.svg">
       </button>
 

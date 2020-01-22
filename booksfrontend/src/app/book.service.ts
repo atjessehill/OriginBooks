@@ -29,17 +29,35 @@ export class BookService {
     return this.webReqService.post(`books`, { title, author, genre, userId });
   }
 
+  updateBook(bookJson: any){
+    let title = bookJson.title;
+    let author = bookJson.author;
+    let genre = bookJson.genre;
+    let userId = localStorage.getItem('user-id');
+    let bookId = bookJson.id;
+    return this.webReqService.patch(`books/${bookId}`, { title, author, genre });
+
+  }
+
   getBooks(){
     return this.webReqService.get(`books`);
   }
 
   getOneBook(bookId: any){
-    console.log("getting one book");
     return this.webReqService.get(`books/${bookId}`);
   }
 
   getNotes(bookId: any){
 
     return this.webReqService.get(`books/${bookId}/notes`);
+  }
+
+  deleteBook(bookId: any){
+
+    return this.webReqService.delete(`books/${bookId}`);
+  }
+
+  deleteNote(bookId: any, noteId: any){
+    return this.webReqService.delete(`books/${bookId}/note/${noteId}`);
   }
 }

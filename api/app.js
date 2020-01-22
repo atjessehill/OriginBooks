@@ -227,9 +227,10 @@ app.patch('/books/:bookId', (req, res) => {
     })
 });
 
-app.delete('/books/:bookId', (req, res) => {
+app.delete('/books/:bookId', authenticate, (req, res) => {
     Book.findOneAndRemove({
         _id: req.params.bookId,
+        _userId: req.user_id
     }).then((removedBookDoc) => {
         res.send(removedBookDoc);
 
@@ -245,37 +246,16 @@ app.delete('/books/:bookId', (req, res) => {
  * GET /Notes
  * Purpose: Get all Notes that correspond to a book and shelf
  */
-app.get('/books/:bookId/notes', (req, res) =>{
+app.get('/books/:bookId/notes', authenticate, (req, res) =>{
     // We want to return all books that belong to a specific book shelf (specified by id)
-    resDict = []
     let bookId = req.params.bookId;
     Note.find({
         _bookId: bookId
     }).then((notes) => {
 
-        // let book = getOneBook(req.params.bookId);
-
-        // resDict.push({
-        //     key: "notes",
-        //     value: notes
-        // });
         res.send(notes);
 
     })
-
-    // Book.findOne({
-    //     _id: bookId,
-    // }).then((book) => {
-
-    //     // console.log(book);
-    //     resDict.push({
-    //         key: "book",
-    //         value: book
-    //     });
-    // })
-    // console.log(resDict);
-
-
 });
 
 
@@ -295,6 +275,40 @@ app.post('/books/:bookId/notes', (req, res) => {
     newNote.save().then((newNoteDoc) => {
         res.send(newNoteDoc);
     })
+});
+
+/**
+ * 
+ * DELETE /Notes
+ * Purpose: Delete a note corresponding to a book on a shelf
+ */
+
+app.delete('/books/:bookId/note/:noteId', authenticate, (req, res) => {
+
+    Book.findOne({
+        _id: req.params.bookId,
+        _userId: req.user_id
+    }).then((book) => {
+        if (book) {
+
+            return true;
+        }
+
+        return false;
+    }).then((canDeleteNote) => {
+        
+        if (canDeleteNote) {
+            Note.findOneAndRemove({
+                _id: req.params.noteId,
+                _bookId: req.params.bookId
+            }).then((removedNoteDoc) => {
+                res.send(removedNoteDoc);
+            })
+        }else{
+            res.sendStatus(404);
+        }
+    })
+
 });
 
 /**

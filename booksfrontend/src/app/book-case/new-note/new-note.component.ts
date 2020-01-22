@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BookService } from '../../book.service';
+import { Router } from '@angular/router';
+
 
 
 @Component({
@@ -10,7 +12,7 @@ import { BookService } from '../../book.service';
 })
 export class NewNoteComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute, private bookService: BookService) { }
+  constructor(private route: ActivatedRoute, private bookService: BookService, private router: Router) { }
 
   createNote(fNote: string, fPage: number){
 
@@ -22,6 +24,9 @@ export class NewNoteComponent implements OnInit {
     }
     this.bookService.createNote(noteObj).subscribe((response: any) =>{
       console.log(response);
+
+      let id = this.route.snapshot.paramMap.get('bookId');
+      this.router.navigate(['books/', id]);
       //Now we navigate to /bookshelves/shelfId
     });
   }
