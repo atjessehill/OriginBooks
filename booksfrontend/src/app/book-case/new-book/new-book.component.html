@@ -31,7 +31,7 @@
     </div>
     <br><br>
     <div class="buttons is-right">
-      <button routerLink="/books" class="button is-medium">Cancel</button>
+      <button (click)="cancelEdit()" class="button is-medium">Cancel</button>
       <button class="button is-primary is-medium has-text-white" (click)="updateBook(titleInput.value, authorInput.value, genreInput.value)" routerLink="/">Update</button>
     </div>
 

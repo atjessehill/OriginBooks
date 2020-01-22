@@ -50,6 +50,11 @@ export class NewBookComponent implements OnInit {
     });
   }
 
+  cancelEdit(){
+
+    this.router.navigate(['/books', this.selectedBook._id]);
+  }
+
   createBook(fTitle: string, fAuthor: string, fGenre: string){
     // this.bookService.createShelf(title).subscribe((response: any) =>{
 
@@ -67,7 +72,4 @@ export class NewBookComponent implements OnInit {
     });
   }
 
-  editBook(){
-
-  }
 }

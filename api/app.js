@@ -235,7 +235,7 @@ app.delete('/books/:bookId', authenticate, (req, res) => {
         res.send(removedBookDoc);
 
         // delete all the tasks that are in the deleted list
-        deleteNotesFromBook(removedBookDoc._bookId);
+        deleteNotesFromBook(removedBookDoc._id);
     })
 });
 
@@ -258,6 +258,21 @@ app.get('/books/:bookId/notes', authenticate, (req, res) =>{
     })
 });
 
+app.get('/books/:bookId/notes/:noteId', authenticate, (req, res) =>{
+    // We want to return all books that belong to a specific book shelf (specified by id)
+    let bookId = req.params.bookId;
+    let noteId = req.params.noteId;
+
+    Note.findOne({
+        _id: noteId,
+        _bookId: bookId
+    }).then((note) => {
+
+        res.send(note);
+
+    })
+});
+
 
 /**
  * 
@@ -276,6 +291,25 @@ app.post('/books/:bookId/notes', (req, res) => {
         res.send(newNoteDoc);
     })
 });
+
+/**
+ * 
+ * PATCH /Notes
+ * Purpose: Patch and update a note corresponding to a book on a shelf
+ */
+
+app.patch('/books/:bookId/notes/:notesId', authenticate, (req, res) =>{
+    // We want to update the specified book with new values specified in the JSON body of the request
+
+    Note.findOneAndUpdate({
+         _id: req.params.notesId
+        }, {
+        $set: req.body
+    }).then(() => {
+        res.sendStatus(200);
+    });
+});
+
 
 /**
  * 

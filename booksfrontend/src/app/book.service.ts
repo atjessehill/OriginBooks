@@ -39,6 +39,15 @@ export class BookService {
 
   }
 
+  updateNote(noteJson: any){
+    let bookId = noteJson.bookId;
+    let noteId = noteJson.noteId;
+    let note = noteJson.note;
+    let page = noteJson.page;
+
+    return this.webReqService.patch(`books/${bookId}/notes/${noteId}`, {note, page});
+  }
+
   getBooks(){
     return this.webReqService.get(`books`);
   }
@@ -50,6 +59,11 @@ export class BookService {
   getNotes(bookId: any){
 
     return this.webReqService.get(`books/${bookId}/notes`);
+  }
+
+  getOneNote(bookId: any, noteId: any){
+
+    return this.webReqService.get(`books/${bookId}/notes/${noteId}`);
   }
 
   deleteBook(bookId: any){

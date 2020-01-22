@@ -65,4 +65,16 @@ export class BookComponent implements OnInit {
 
   }
 
+  editNote(noteId: any){
+    let bookId = this.route.snapshot.paramMap.get('bookId');
+    this.router.navigate(['books/', bookId, noteId, 'edit']);
+
+  }
+
+  editBook(){
+    let bookId = this.route.snapshot.paramMap.get('bookId');
+    this.router.navigate(['books/', bookId, 'edit']);
+
+  }
+
 }

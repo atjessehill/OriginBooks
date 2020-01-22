@@ -1,5 +1,5 @@
 <div class="centered-content">
-  <div class="modal-box">
+  <div class="modal-box" *ngIf="!editMode">
     <h1 class="title"> Add a New Note</h1>
 
 
@@ -15,6 +15,24 @@
       <button class="button is-primary is-medium has-text-white" (click)="createNote(noteInput.value, pageInput.value)" routerLink="/">Create</button>
     </div>
 
+
+  </div>
+
+  <div class="modal-box" *ngIf="editMode">
+    <h1 class="title"> Edit Your Note</h1>
+
+
+    <div #NoteDataInput>
+      <input #noteInput class="input has-background-light is-medium" type="text" value="{{ selectedNote.note }}">
+      <br><br>
+      <input #pageInput class="input has-background-light is-medium" type="number" value="{{ selectedNote.page }}">
+      <br><br>
+    </div>
+    <br><br>
+    <div class="buttons is-right">
+      <button routerLink="/" class="button is-medium">Cancel</button>
+      <button class="button is-primary is-medium has-text-white" (click)="editNote(noteInput.value, pageInput.value)" routerLink="/">Edit</button>
+    </div>
 
   </div>
 

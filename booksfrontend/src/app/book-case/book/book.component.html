@@ -23,7 +23,17 @@
           <h1 class="title book-title info-item"> {{ selectedBook.title }} </h1>
           <h2 class="title has-text-primary author-name info-item"> {{ selectedBook.author }} </h2>
           <h3 class="title book-genre info-item"> {{ selectedBook.genre }} </h3>
-          <a class="delete is-large" (click)="deleteBook()"></a>
+          <div class="edit-delete-container">
+            <button class="circle-edit-button button is-primary" (click)="editBook()">
+              <i class="fas fa-pencil-alt"></i>
+            </button>
+            <button class="circle-delete-button button" (click)="deleteBook()">
+              <i class="far fa-trash-alt"></i>
+            </button>
+
+            <!-- <a class="delete is-large" (click)="deleteBook()"></a> -->
+          </div>
+
 
         </div>
         <div class="border-container">
@@ -42,6 +52,7 @@
               {{ note.note }} | {{ note.page }}
             </p>
             <a class="delete is-small" (click)="deleteNote(noteItem.id)"></a>
+            <a class="fas fa-pencil-alt" (click)="editNote(noteItem.id)"></a>
 
           </div>
 
@@ -64,10 +75,12 @@
       </div>
 
       <!-- Note Elements go Here -->
+      <div *ngIf="bookSelected">
+        <button class="circle-add-button button is-primary" (click)="newNoteCall()">
+          <img src="../../../assets/plus-icon.svg">
+        </button>
+      </div>
 
-      <button class="circle-add-button button is-primary" (click)="newNoteCall()">
-        <img src="../../../assets/plus-icon.svg">
-      </button>
 
     </div>
   </div>
