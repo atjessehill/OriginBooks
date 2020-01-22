@@ -10,11 +10,37 @@ const { Shelf, Book, Note, User } = require('./db/models');
 
 const jwt = require('jsonwebtoken');
 
-const port = process.env.PORT || 8080;
+// create a database variable outside of the database
+// connection callback to reuse the db connection pool
+
+// app.listen(port, () =>{
+
+//   console.log("Server is listening on Port 3000");
+// });
+
+mongodb.MongoClient.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/test", function (err, client) {
+  if (err) {
+    console.log(err);
+    process.exit(1);
+  }
+
+  // Save database object from the callback for reuse.
+  db = client.db();
+  console.log("Database connection ready");
+
+  // Initialize the app.
+  var server = app.listen(process.env.PORT || 8080, function () {
+    var port = server.address().port;
+    console.log("App now running on port", port);
+  });
+});
+
+
 
 /**
  * MIDDLEWARE */
 app.use(bodyParser.json());
+
 
 // check whether the request has a valid JWT access token
 let authenticate = (req, res, next) => {
@@ -46,11 +72,11 @@ let verifySession = (req, res, next) => {
         if (!user){
             //user couldn't be found
 
-            return Promise.reject({ 
+            return Promise.reject({
                 'error': 'User Not found. Make sure the refresh token and user id are correct'
             });
         }
-        
+
 
             // if the code reaches here - the user was found
             // therefore the refresh token exists in the db but have to check if it expired.
@@ -107,7 +133,7 @@ app.use(function(req, res, next) {
 /* ROUTE HANDLERS */
 
 /**
- * 
+ *
  * GET /books
  * Purpose: Get all books
  */
@@ -130,7 +156,7 @@ app.post('/bookshelf', (req, res) => {
     // We want to create a new book and return the new book doc back to the user which includes the ID
     // Book info will be passed via JSON body
     let name = req.body.name;
-    
+
     let newShelf = new Shelf({
         name
     });
@@ -140,7 +166,7 @@ app.post('/bookshelf', (req, res) => {
     });
 });
 
-/** 
+/**
  * PATCH /books/:id
  * Purpose: Update a specified bok
  */
@@ -154,7 +180,7 @@ app.patch('/bookshelf/:id', (req, res) =>{
     });
 });
 
-/** 
+/**
  * DELETE /books/:id
  * Purpose: Update a specified bok
  */
@@ -166,12 +192,12 @@ app.delete('/bookshelf/:id', (req, res) =>{
     }).then((removeShelfDoc) => {
         res.send(removeShelfDoc);
 
-        // delete all the book in the deleted 
+        // delete all the book in the deleted
     })
 
 });
 
-/** 
+/**
  * GET /bookshelf/:shelfid/books
  * Purpose: Get all books in a specific shelf
  */
@@ -194,7 +220,7 @@ app.get('/books/:bookId', authenticate, (req, res) => {
 
 })
 
-/** 
+/**
  * POST /bookshelf/:shelfId/books
  * Purpose: Create a new book in a specific bookshelf
  */
@@ -241,10 +267,10 @@ app.delete('/books/:bookId', authenticate, (req, res) => {
     })
 });
 
-// ROUTES FOR NOTES 
+// ROUTES FOR NOTES
 
 /**
- * 
+ *
  * GET /Notes
  * Purpose: Get all Notes that correspond to a book and shelf
  */
@@ -277,7 +303,7 @@ app.get('/books/:bookId/notes/:noteId', authenticate, (req, res) =>{
 
 
 /**
- * 
+ *
  * POST /Notes
  * Purpose: POST a note corresponding to a book on a shelf
  */
@@ -295,7 +321,7 @@ app.post('/books/:bookId/notes', (req, res) => {
 });
 
 /**
- * 
+ *
  * PATCH /Notes
  * Purpose: Patch and update a note corresponding to a book on a shelf
  */
@@ -314,7 +340,7 @@ app.patch('/books/:bookId/notes/:notesId', authenticate, (req, res) =>{
 
 
 /**
- * 
+ *
  * DELETE /Notes
  * Purpose: Delete a note corresponding to a book on a shelf
  */
@@ -332,7 +358,7 @@ app.delete('/books/:bookId/note/:noteId', authenticate, (req, res) => {
 
         return false;
     }).then((canDeleteNote) => {
-        
+
         if (canDeleteNote) {
             Note.findOneAndRemove({
                 _id: req.params.noteId,
@@ -348,14 +374,14 @@ app.delete('/books/:bookId/note/:noteId', authenticate, (req, res) => {
 });
 
 /**
- * USER ROUTES 
- * 
+ * USER ROUTES
+ *
  */
 
  /**
   * POST /users
   * PURPUSE: Sign Up
-  * 
+  *
   */
 
 app.post('/users', (req, res) => {
@@ -435,7 +461,7 @@ app.get('/users', (req, res) => {
 })
 
 
-// Helper Methods 
+// Helper Methods
 let deleteNotesFromBook = (_bookId) => {
     Note.deleteMany({
         _bookId
@@ -445,7 +471,3 @@ let deleteNotesFromBook = (_bookId) => {
 }
 
 
-app.listen(port, () =>{
-
-    console.log("Server is listening on Port 3000");
-});
