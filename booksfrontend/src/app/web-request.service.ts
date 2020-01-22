@@ -24,7 +24,9 @@ export class WebRequestService {
     //   })
     // };
 
-    return this.http.get(`${this.ROOT_URL}/${uri}`);
+    // return this.http.get(`${this.ROOT_URL}/${uri}`);
+    return this.http.get(`${uri}`);
+
   }
 
   getPayload(uri: string, payload: Object){
@@ -37,24 +39,29 @@ export class WebRequestService {
       })
     };
 
-    return this.http.get(`${this.ROOT_URL}/${uri}`, payload);
+    // return this.http.get(`${this.ROOT_URL}/${uri}`, payload);
+    return this.http.get(`${uri}`, payload);
   }
 
   post(uri: string, payload: Object){
-    return this.http.post(`${this.ROOT_URL}/${uri}`, payload);
+    // return this.http.post(`${this.ROOT_URL}/${uri}`, payload);
+    return this.http.post(`${uri}`, payload);
   }
 
   patch(uri: string, payload: Object){
-    return this.http.patch(`${this.ROOT_URL}/${uri}`, payload);
+    // return this.http.patch(`${this.ROOT_URL}/${uri}`, payload);
+    return this.http.patch(`${uri}`, payload);
   }
 
   delete(uri: string){
-    return this.http.delete(`${this.ROOT_URL}/${uri}`);
+    // return this.http.delete(`${this.ROOT_URL}/${uri}`);
+    return this.http.delete(`${uri}`);
+
   }
 
   login(email: string, password: string){
 
-    return this.http.post(`${this.ROOT_URL}/users/login`,{
+    return this.http.post(`users/login`,{
       email,
       password
     }, {

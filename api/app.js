@@ -10,6 +10,8 @@ const { Shelf, Book, Note, User } = require('./db/models');
 
 const jwt = require('jsonwebtoken');
 
+const port = process.env.PORT || 8080;
+
 /**
  * MIDDLEWARE */
 app.use(bodyParser.json());
@@ -442,7 +444,8 @@ let deleteNotesFromBook = (_bookId) => {
     });
 }
 
-app.listen(3000, () =>{
+
+app.listen(port, () =>{
 
     console.log("Server is listening on Port 3000");
 });
